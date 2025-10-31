@@ -1,0 +1,32 @@
+{
+  "name": "AgriTrust-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AgriTrust with Hedera HCS/HTS integration",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --env-file=/workspace/76ae6a89-00b8-41fa-b6db-b9f2afa8b671/backend/.env src/index.js",
+    "start": "node --env-file=/workspace/76ae6a89-00b8-41fa-b6db-b9f2afa8b671/backend/.env src/index.js",
+    "create-topic": "node scripts/createTopic.js",
+    "check-topic": "node scripts/checkTopic.js",
+    "seed-demo": "node scripts/seedDemo.js"
+  },
+  "keywords": [
+    "hedera",
+    "blockchain",
+    "agriculture",
+    "traceability"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@hashgraph/sdk": "^2.75.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "envalid": "^8.1.0",
+    "express": "^4.21.1"
+  }
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="164" height="200" viewBox="0 0 164 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="agritrust-leaf" x1="24" y1="12" x2="140" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3ED26F"/>
+      <stop offset="1" stop-color="#1F6EEA"/>
+    </linearGradient>
+  </defs>
+  <path d="M82 10C82 10 20 46 20 106C20 154 57 190 82 190C107 190 144 154 144 106C144 46 82 10 82 10Z" fill="url(#agritrust-leaf)"/>
+  <g stroke="#F5FFFA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M82 40V162"/>
+    <path d="M58 62L82 86L66 102"/>
+    <path d="M106 62L94 74"/>
+    <path d="M54 112L70 128"/>
+    <path d="M96 116L110 130"/>
+    <path d="M50 82H66"/>
+    <path d="M100 92H114"/>
+    <circle cx="100" cy="70" r="6" fill="#F5FFFA"/>
+    <circle cx="58" cy="96" r="6" fill="#F5FFFA"/>
+    <circle cx="94" cy="142" r="6" fill="#F5FFFA"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+
+project_id = "mrbfrwtymikayrbrzgmp"
+
+# Edge Functions Configuration
+# verify_jwt controls whether functions require user authentication
+
+# Test Hedera Credentials - Public access for testing
+# Set to false to allow testing without user login
+# Set to true to require authenticated users only
+[functions.test-hedera-credentials]
+verify_jwt = false
+
+# Register Batch - Public access for testing
+# Set to false to allow API calls without user authentication
+# Set to true in production to require authenticated users
+[functions.register-batch]
+verify_jwt = false
+
+# Verify Batch - Public access for NFT verification
+# Set to false to allow public verification without authentication
+[functions.verify-batch]
+verify_jwt = false
+
+# Note: Even with verify_jwt = false, the apikey header is ALWAYS required
+# verify_jwt = true requires BOTH apikey AND Authorization: Bearer <user_access_token>
+# verify_jwt = false requires ONLY apikey header

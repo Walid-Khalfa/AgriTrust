@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://assets-gen.codenut.dev/images/1761559439_cefd5bca.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#059669" />
+    <meta name="description" content="Traçabilité blockchain pour l'agriculture africaine avec Hedera Hashgraph et Intelligence Artificielle" />
+    <meta name="keywords" content="blockchain, agriculture, traçabilité, Hedera, NFT, AI, Afrique" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Mobile Optimization -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AgriTrust" />
+    
+    <title>AgriTrust</title>
+    <script>
+      (function optimizePreloads() {
+        var links = document.querySelectorAll('link[rel="preload"]');
+        links.forEach(function (link) {
+          if (link.hasAttribute('as')) return;
+          var href = link.getAttribute('href') || '';
+          if (href.endsWith('.css')) {
+            link.setAttribute('as', 'style');
+          } else if (href.endsWith('.js') || href.endsWith('.mjs')) {
+            link.setAttribute('as', 'script');
+          } else if (/\.woff2(?:\?|$)/.test(href)) {
+            link.setAttribute('as', 'font');
+            if (!link.hasAttribute('type')) {
+              link.setAttribute('type', 'font/woff2');
+            }
+            if (!link.hasAttribute('crossorigin')) {
+              link.setAttribute('crossorigin', 'anonymous');
+            }
+          } else if (href.endsWith('.json')) {
+            link.setAttribute('as', 'fetch');
+            if (!link.hasAttribute('crossorigin')) {
+              link.setAttribute('crossorigin', 'anonymous');
+            }
+          }
+        });
+      })();
+    </script>
+    <script>
+      (function fetchPreviewMetadata() {
+        if (typeof window === 'undefined' || typeof window.fetch !== 'function') return;
+        var host = window.location && window.location.hostname;
+        var isPreviewHost = host && (host === 'localhost' || /\.codenut\.dev$/.test(host));
+        if (!isPreviewHost) return;
+
+        var globalAny = window;
+        var metaTag = document.querySelector('meta[name="codenut-metadata-url"]');
+        var metadataUrl =
+          globalAny.__CODE_NUT_METADATA_URL__ ||
+          globalAny.__PREVIEW_METADATA_URL__ ||
+          (metaTag && metaTag.getAttribute('content'));
+
+        if (!metadataUrl) return;
+
+        window
+          .fetch(metadataUrl)
+          .then(function (response) {
+            if (!response || !response.ok) {
+              return null;
+            }
+            return response.json().catch(function () {
+              return null;
+            });
+          })
+          .catch(function () {
+            return null;
+          });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
