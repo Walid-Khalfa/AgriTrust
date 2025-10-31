@@ -8,11 +8,8 @@ AgriTrust fights food fraud in Africa by pairing Hedera’s immutable ledger wit
 
 ## 🚀 Demo & Submission Links (For Judges)
 
-* **Demo Video (3 min):** `https://youtu.be/nHIcXb2UoRc` [cite: 57, 58]
-* **Pitch Deck (PDF):** `https://drive.google.com/file/d/1ZqD_QokoZp98BuwXufHs-qSDUeBNmgOU/view?usp=sharing` [cite: 36, 64]
-* **Guided Tour App URL:** `https://[YOUR_CODENUT_AI_URL]/demo`
-* **Direct Verification Example:** `https://[YOUR_CODENUT_AI_URL]/verify/0.0.XXXX/1` (replace with the `seedDemo` token ID)
-
+* **Demo Video (3 min):** `https://youtu.be/nHIcXb2UoRc`
+* **Pitch Deck (PDF):** `https://drive.google.com/file/d/1ZqD_QokoZp98BuwXufHs-qSDUeBNmgOU/view?usp=sharing`
 ---
 
 ## 1. Project Description
@@ -83,8 +80,8 @@ Adoption in Africa demands sub-$1 fees per transaction. Hedera’s fixed, neglig
 
 ## 5. Deployed Hedera IDs (Testnet)
 * Operator Account: `0.0.7127337`
-* Topic ID (HCS): `[!! USER: INSERT YOUR TOPIC ID FROM THE SCRIPT !!]`
-* Demo Token ID (HTS): `[!! USER: INSERT TOKEN ID FROM seedDemo !!]`
+* Topic ID (HCS): 0.0.7127691
+* Demo Token ID (HTS): 0.0.7170927 (serial #1)
 
 ---
 
@@ -95,8 +92,8 @@ The project is optimized for fast setup.
 1. **Clone the Repository**
 
    ```bash
-   git clone [YOUR_GITHUB_URL]
-   cd [REPO_FOLDER]
+   git clone https://github.com/Walid-Khalfa/AgriTrust
+   cd AgriTrust
    ```
 
 2. **Install Dependencies**
