@@ -41,21 +41,22 @@ AgriTrust solves this by:
 ---
 
 ## Tech Stack
-**Frontend**
+
+### Frontend
 - React / Next.js
 - TypeScript
 - Responsive UI components
 
-**Backend**
+### Backend
 - Node.js
 - REST APIs
 - Authentication & validation
 
-**AI**
+### AI
 - LLM integration
 - Prompt engineering for product insights
 
-**Blockchain**
+### Blockchain
 - Hedera
 - NFT minting for certificates
 
@@ -70,7 +71,7 @@ AgriTrust solves this by:
 ---
 
 ## Screenshots
-_Add screenshots in docs/screenshots_
+_Add screenshots in `docs/screenshots`_
 
 ---
 
