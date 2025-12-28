@@ -70,8 +70,16 @@ AgriTrust solves this by:
 
 ---
 
-## Screenshots
-_Add screenshots in `docs/screenshots`_
+## Video Demo
+
+▶️ **AgriTrust – Full Demo (AI + Blockchain Traceability)**  
+https://youtu.be/nHIcXb2UoRc
+
+This video demonstrates:
+- The end-to-end traceability workflow
+- NFT certificate generation
+- AI-powered provenance insights
+- User dashboard and verification flow
 
 ---
 
