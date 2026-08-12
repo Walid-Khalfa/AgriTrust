@@ -9,12 +9,6 @@ const __dirname = dirname(__filename);
 // Force load .env file with override to bypass system env vars
 dotenv.config({ path: join(__dirname, '../../.env'), override: true });
 
-// Debug: Log what we're getting
-console.log('🔍 Debug - SUPABASE_SERVICE_ROLE_KEY from process.env:');
-console.log('   Value:', process.env.SUPABASE_SERVICE_ROLE_KEY);
-console.log('   Length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length || 0);
-console.log('   Starts with eyJ:', process.env.SUPABASE_SERVICE_ROLE_KEY?.startsWith('eyJ'));
-
 export const env = cleanEnv(process.env, {
   SUPABASE_URL: str(),
   SUPABASE_SERVICE_ROLE_KEY: str(),
@@ -46,4 +40,3 @@ if (env.SUPABASE_SERVICE_ROLE_KEY.length < 100 || !env.SUPABASE_SERVICE_ROLE_KEY
 }
 
 console.log('✅ Environment validation passed');
-console.log(`   Service Role Key length: ${env.SUPABASE_SERVICE_ROLE_KEY.length} chars`);

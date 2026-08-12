@@ -108,12 +108,43 @@ async function seedDemo() {
         tags: ["organic", "premium", "fresh"],
         generatedAt: new Date().toISOString(),
       },
-      ai_provenance_summary: aiSummary.summary_en,
+      ai_provenance_summary: JSON.stringify({
+        summary_en: aiSummary.summary_en,
+        summary_fr: aiSummary.summary_fr,
+        timeline: aiSummary.timeline,
+        trustScore: aiSummary.trustScore,
+        trustExplanation: aiSummary.trustExplanation,
+        generatedAt: new Date().toISOString(),
+      }),
       certifications: ["Organic", "Fair Trade"],
     });
 
     if (batchError) {
       throw new Error(`Supabase batches error: ${batchError.message}`);
+    }
+
+    const { data: seededBatch } = await supabase
+      .from("batches")
+      .select("id")
+      .eq("hedera_token_id", tokenId)
+      .eq("hedera_serial_number", serialNumber)
+      .single();
+
+    const { error: timelineError } = await supabase.from("hcs_timeline").upsert(
+      hcsTimeline.map((event, idx) => ({
+        transaction_id: event.txId,
+        batch_id: seededBatch?.id || null,
+        timestamp: event.timestamp,
+        event: event.event,
+        location: event.location,
+        operator: event.operator,
+        data: event.eventData,
+      })),
+      { onConflict: "transaction_id" }
+    );
+
+    if (timelineError) {
+      throw new Error(`Supabase hcs_timeline error: ${timelineError.message}`);
     }
 
     await supabase

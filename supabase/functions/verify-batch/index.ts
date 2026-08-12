@@ -83,7 +83,7 @@ serve(async (req) => {
       .from('batches')
       .select('*')
       .eq('hedera_token_id', tokenId)
-      .eq('hedera_serial_number', Number(serialNumber))
+      .eq('hedera_serial_number', String(serialNumber))
       .maybeSingle();
 
     if (batchError) {
@@ -110,14 +110,37 @@ serve(async (req) => {
     const hcsTransactionIds = batch.hcs_transaction_ids || [];
     console.log('→ Fetching HCS messages:', hcsTransactionIds.length);
 
-    const { data: hcsMessages, error: hcsError } = await supabase
-      .from('hcs_timeline')
-      .select('*')
-      .in('transaction_id', hcsTransactionIds)
-      .order('timestamp', { ascending: true });
+    let hcsMessages: any[] = [];
+    if (hcsTransactionIds.length > 0) {
+      const { data: timelineRows, error: hcsError } = await supabase
+        .from('hcs_timeline')
+        .select('transaction_id, timestamp, event, location, operator, data')
+        .in('transaction_id', hcsTransactionIds)
+        .order('timestamp', { ascending: true });
 
-    if (hcsError) {
-      console.warn('→ HCS query warning (non-fatal):', hcsError.message);
+      if (hcsError) {
+        console.warn('→ HCS query warning (non-fatal):', hcsError.message);
+      } else {
+        hcsMessages = (timelineRows || []).map((row: any) => ({
+          transactionId: row.transaction_id,
+          timestamp: row.timestamp,
+          event: row.event,
+          location: row.location,
+          operator: row.operator,
+          data: row.data,
+        }));
+      }
+    }
+
+    // Parse AI provenance summary (stored as JSON string in the new flow,
+    // plain text in legacy seeded records)
+    let aiSummary = null;
+    if (batch.ai_provenance_summary) {
+      try {
+        aiSummary = JSON.parse(batch.ai_provenance_summary);
+      } catch {
+        aiSummary = { summary_en: batch.ai_provenance_summary, summary_fr: null };
+      }
     }
 
     // Build response
@@ -140,8 +163,8 @@ serve(async (req) => {
         mintedAt: batch.tokenized_at,
       },
       hcsTransactionIds,
-      hcsMessages: hcsMessages || [],
-      ai_summary: batch.ai_provenance_summary || null,
+      hcsMessages,
+      ai_summary: aiSummary,
     };
 
     console.log('→ Success (200)');

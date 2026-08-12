@@ -249,7 +249,7 @@ export default function BatchRegistration() {
                         Your proof is saved. Copy the Transaction ID and proceed to the next step to create your certificate.
                       </p>
                       <button
-                        onClick={() => navigate('/tokenize')}
+                        onClick={() => navigate('/tokenize', { state: { batchId: mutation.data.batchId } })}
                         className="mt-3 w-full px-4 py-2 font-bold text-white bg-emerald-700 rounded-lg shadow hover:bg-emerald-800 transition-colors"
                       >
                         Next Step: Tokenize

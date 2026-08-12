@@ -51,7 +51,7 @@ export async function submitBatchData(batchData) {
 export async function fetchHCSMessage(topicId, sequenceNumber) {
   try {
     const axios = (await import('axios')).default;
-    const url = `${config.MIRROR_NODE_URL}/api/v1/topics/${topicId}/messages/${sequenceNumber}`;
+    const url = `${env.MIRROR_NODE_URL}/api/v1/topics/${topicId}/messages/${sequenceNumber}`;
     
     const response = await axios.get(url);
     

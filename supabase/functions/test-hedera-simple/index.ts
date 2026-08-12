@@ -23,11 +23,7 @@ serve(async (req) => {
 
     console.log("Environment check:", {
       hasOperatorId: !!operatorId,
-      operatorId: operatorId,
       hasOperatorKey: !!operatorKey,
-      operatorKeyLength: operatorKey?.length,
-      operatorKeyPrefix: operatorKey?.substring(0, 10),
-      operatorKeySuffix: operatorKey?.substring(operatorKey.length - 10),
       network,
     });
 

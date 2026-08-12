@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { QRCodeCanvas } from 'qrcode.react';
 import { tokenizeBatch } from '@/lib/api';
@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, CheckCircle2, AlertCircle, Sparkles, Award, Copy, ExternalLink, FileText, Link2, ArrowRight } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Loader2, CheckCircle2, AlertCircle, Sparkles, Award, Copy, ExternalLink, FileText, Link2, ArrowRight, Hash } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -18,14 +19,17 @@ import { Helmet } from 'react-helmet-async';
 
 export default function BatchTokenize() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { batchId?: string } | null;
   const [txIds, setTxIds] = useState('');
+  const [batchId, setBatchId] = useState(state?.batchId || '');
   const [isDemoMode, setIsDemoMode] = useState(true);
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: async (data: { hcsTransactionIds: string[]; isDemoMode: boolean }) => {
+    mutationFn: async (data: { hcsTransactionIds: string[]; batchId?: string; isDemoMode: boolean }) => {
       const result = await tokenizeBatch(
-        { hcsTransactionIds: data.hcsTransactionIds },
+        { hcsTransactionIds: data.hcsTransactionIds, batchId: data.batchId || undefined },
         data.isDemoMode
       );
       return { ...result, hcsTransactionIds: data.hcsTransactionIds };
@@ -62,7 +66,7 @@ export default function BatchTokenize() {
       return;
     }
 
-    mutation.mutate({ hcsTransactionIds, isDemoMode });
+    mutation.mutate({ hcsTransactionIds, batchId: batchId.trim(), isDemoMode });
   };
 
   // Success screen
@@ -234,6 +238,22 @@ export default function BatchTokenize() {
                   <FileText className="h-3 w-3 mt-0.5 text-gray-500" />
                   Enter transaction IDs from batch registration (one per line or comma-separated)
                 </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="batchId" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Hash className="h-4 w-4 text-violet-600" />
+                  Batch ID
+                  <span className="text-xs font-normal text-gray-400">(optional, links the NFT to its batch)</span>
+                </Label>
+                <Input
+                  id="batchId"
+                  placeholder="UUID from batch registration"
+                  value={batchId}
+                  onChange={(e) => setBatchId(e.target.value)}
+                  disabled={mutation.isPending}
+                  className="h-11 font-mono text-sm border-gray-300 focus:border-violet-500 focus:ring-violet-500"
+                />
               </div>
 
               <div className="flex items-center space-x-2 p-4 bg-amber-50 border border-amber-200 rounded-lg">

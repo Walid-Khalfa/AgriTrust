@@ -59,6 +59,7 @@ export interface RegisterBatchResponse {
 
 export interface TokenizeBatchRequest {
   hcsTransactionIds: string[];
+  batchId?: string;
 }
 
 export interface TokenizeBatchResponse {
@@ -160,10 +161,16 @@ export const registerBatch = async (data: RegisterBatchRequest): Promise<Registe
 
 export const tokenizeBatch = async (data: TokenizeBatchRequest, isDemoMode: boolean = false): Promise<TokenizeBatchResponse> => {
   console.log('[api] Calling tokenize-batch with:', data, 'Demo mode:', isDemoMode);
-  
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session?.access_token) {
+    throw new Error('You must be logged in to tokenize a batch. Please log in first.');
+  }
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+    'Authorization': `Bearer ${session.access_token}`,
     'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY
   };
   

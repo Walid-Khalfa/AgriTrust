@@ -337,6 +337,35 @@ Deno.serve(async (req) => {
   const dryRun = req.headers.get('x-dry-run') === '1'
 
   try {
+    // Require authentication: verify the caller's Supabase JWT
+    const authHeader = req.headers.get('Authorization')
+    const authSupabaseUrl = Deno.env.get('SUPABASE_URL')
+    const authSupabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')
+
+    const unauthorized = (message: string) =>
+      new Response(
+        JSON.stringify({ id: requestId, error: 'Unauthorized', message }),
+        { status: 401, headers: corsHeaders }
+      )
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return unauthorized('Missing Authorization header. Please log in first.')
+    }
+
+    if (!authSupabaseUrl || !authSupabaseAnonKey) {
+      return unauthorized('Server configuration error: SUPABASE_URL or SUPABASE_ANON_KEY not configured')
+    }
+
+    const authSupabase = createClient(authSupabaseUrl, authSupabaseAnonKey)
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser(
+      authHeader.replace('Bearer ', '')
+    )
+
+    if (authError || !user) {
+      console.warn(`[${requestId}] Auth failed:`, authError?.message)
+      return unauthorized('Invalid or expired session. Please log in again.')
+    }
+
     // Parse request body with error handling
     let body: unknown = null
     const rawText = await req.text()
@@ -640,6 +669,28 @@ Deno.serve(async (req) => {
     }
 
     console.log(`[${requestId}] ✅ Batch registered successfully - ID: ${batchRecord.id}`)
+
+    // Record the HCS message in the timeline so verification can reconstruct the trail
+    const { error: timelineError } = await supabase
+      .from('hcs_timeline')
+      .upsert([{
+        transaction_id: hcsResult.transactionId,
+        batch_id: batchRecord.id,
+        timestamp: new Date().toISOString(),
+        event: 'BATCH_REGISTERED',
+        location,
+        operator: user.id,
+        data: {
+          productType,
+          quantity,
+          harvestDate: harvestDateISO,
+          aiAnalysis
+        }
+      }], { onConflict: 'transaction_id' })
+
+    if (timelineError) {
+      console.warn(`[${requestId}] Timeline insert failed (non-fatal):`, timelineError.message)
+    }
 
     // Return success response
     return new Response(
